@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wardrobe AI — Il tuo stile, reinventato</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #29251f;
+      background: #f8f5ef;
+    }
+    header {
+      padding: 24px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e7e0d5;
+    }
+    .logo { font-size: 22px; font-weight: 750; letter-spacing: -1px; }
+    .logo span { color: #9a7558; }
+    .tag { font-size: 12px; color: #776c60; }
+    main { max-width: 1050px; margin: auto; padding: 65px 22px; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 3px; font-size: 11px; color: #947353; }
+    h1 { font-size: clamp(38px, 7vw, 68px); line-height: 1.04; letter-spacing: -2.5px; margin: 18px 0; }
+    .intro { max-width: 590px; color: #71685e; line-height: 1.7; }
+    .panel {
+      margin-top: 35px; padding: 28px; background: white;
+      border: 1px solid #e8e0d5; border-radius: 22px;
+      box-shadow: 0 12px 40px #42321a0a;
+    }
+    .uploads { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .upload {
+      border: 1px dashed #c9b9a6; border-radius: 15px;
+      min-height: 180px; padding: 18px; display: flex;
+      flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; background: #fcfaf7;
+    }
+    .symbol { font-size: 30px; margin-bottom: 12px; }
+    .upload strong { font-size: 14px; }
+    .upload p { color: #887d71; font-size: 12px; line-height: 1.5; }
+    input[type=file] { max-width: 100%; font-size: 12px; margin-top: 10px; }
+    button {
+      width: 100%; margin-top: 22px; padding: 16px;
+      border: 0; border-radius: 12px; background: #332e27;
+      color: white; font-size: 15px; font-weight: 650; cursor: pointer;
+    }
+    button:hover { background: #514438; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    #result { display: none; margin-top: 22px; }
+    #result img { width: 100%; max-height: 480px; object-fit: contain; border-radius: 12px; background: #f4f0e9; }
+    .note { color: #887d71; font-size: 12px; line-height: 1.6; margin-top: 18px; }
+    footer { padding: 25px; text-align: center; font-size: 12px; color: #887d71; }
+    @media(max-width: 600px) {
+      .uploads { grid-template-columns: 1fr; }
+      main { padding-top: 42px; }
+      .panel { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">wardrobe<span>ai.</span></div>
+    <div class="tag">IL TUO STILE, REINVENTATO</div>
+  </header>
+  <main>
+    <div class="eyebrow">Virtual styling studio</div>
+    <h1>Prova un nuovo<br>look. Prima di indossarlo.</h1>
+    <p class="intro">
+      Carica una tua foto e quella di un capo d'abbigliamento.
+      Wardrobe AI è il tuo spazio per esplorare nuove possibilità di stile.
+    </p>
+    <section class="panel">
+      <div class="uploads">
+        <div class="upload">
+          <div class="symbol">♙</div>
+          <strong>1. La tua foto</strong>
+          <p>Una foto nitida, a figura intera, con il corpo visibile.</p>
+          <input id="person" type="file" accept="image/*">
+        </div>
+        <div class="upload">
+          <div class="symbol">♧</div>
+          <strong>2. Il capo da provare</strong>
+          <p>Una foto chiara del vestito, della maglia o dei pantaloni.</p>
+          <input id="garment" type="file" accept="image/*">
+        </div>
+      </div>
+      <button id="preview">Visualizza le foto selezionate</button>
+      <div id="result">
+        <h3>Anteprima delle tue immagini</h3>
+        <p class="note">Questa è solo un'anteprima: la prova virtuale AI non è ancora collegata.</p>
+        <div id="previews"></div>
+      </div>
+      <p class="note">
+        Suggerimento: usa foto che hai il diritto di utilizzare. Le immagini
+        selezionate vengono visualizzate in questa pagina e non sono caricate
+        su un servizio AI da questa prima versione.
+      </p>
+    </section>
+  </main>
+  <footer>Wardrobe AI · Il tuo guardaroba, nuove possibilità.</footer>
+  <script>
+    const person = document.getElementById('person');
+    const garment = document.getElementById('garment');
+    const result = document.getElementById('result');
+    document.getElementById('preview').addEventListener('click', () => {
+      if (!person.files[0] || !garment.files[0]) {
+        alert('Seleziona entrambe le foto per continuare.');
+        return;
+      }
+      const previews = document.getElementById('previews');
+      previews.replaceChildren();
+      [person.files[0], garment.files[0]].forEach((file, index) => {
+        const title = document.createElement('p');
+        title.textContent = index === 0 ? 'La tua foto' : 'Il capo scelto';
+        const image = document.createElement('img');
+        image.alt = title.textContent;
+        image.src = URL.createObjectURL(file);
+        previews.append(title, image);
+      });
+      result.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
